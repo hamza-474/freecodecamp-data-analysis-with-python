@@ -1,5 +1,9 @@
 # freeCodeCamp — Data Analysis with Python Projects
 
+## 🌐 Live App — run the projects in your browser
+
+**[▶ Open the live app](https://hamza-474.github.io/freecodecamp-data-analysis-with-python/)** — all five projects run right in your browser (Python via Pyodide, no installation or sign-in needed).
+
 These are Hamza Madni's five projects for the [freeCodeCamp Data Analysis with Python Developer Certification](https://www.freecodecamp.org/certification/fcc-e2b594ad-6279-46f6-b5e7-f344e25e0c82/data-analysis-with-python-v7).
 
 ## ▶ Live demo — run in your browser (Google Colab)
