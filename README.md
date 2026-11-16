@@ -12,8 +12,6 @@ These are Hamza Madni's five projects for the [freeCodeCamp Data Analysis with P
 | Page View Time Series Visualizer | `time_series_visualizer.py` | Draws line, bar, and box plots of freeCodeCamp forum page views over time. |
 | Sea Level Predictor | `sea_level_predictor.py` | Plots historical sea-level data and two lines of best fit predicting the rise through 2050. |
 
-> **Note:** `demographic_data_analyzer.py` is not in this repository yet — its OneCompiler source link (https://onecompiler.com/python/459c9g4xr) returns "Not Found", so the code could not be copied. Its dataset (`data/adult.data.csv`) is already included, so the file can be added once the source is available.
-
 ## Datasets
 
 The datasets live in `data/` (offline copies from freeCodeCamp's official boilerplate repositories):
