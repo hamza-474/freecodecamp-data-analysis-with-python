@@ -109,7 +109,7 @@ def run_project(name, arg):
 `;
 
 async function fetchToFS(path) {
-  const res = await fetch(RAW + path);
+  let res; try { res = await fetch(RAW + path); } catch (e) { throw new Error("fetch failed for " + path + ": " + (e && e.message ? e.message : String(e))); }
   if (!res.ok) throw new Error("Could not load " + path);
   const data = new Uint8Array(await res.arrayBuffer());
   const dir = path.split("/").slice(0, -1).join("/");
@@ -131,12 +131,12 @@ async function init() {
       "data/adult.data.csv", "data/medical_examination.csv",
       "data/fcc-forum-pageviews.csv", "data/epa-sea-level.csv"
     ];
-    for (const f of files) await fetchToFS(f);
+    for (const f of files) { statusEl.textContent = "Loading project files… " + f; await fetchToFS(f); }
     pyodide.runPython(PY_RUNNER);
     statusEl.textContent = "Ready — pick a project and press Run.";
     runBtn.disabled = false;
   } catch (err) {
-    statusEl.textContent = "Something went wrong while loading (at: " + statusEl.textContent + "): " + (err && err.stack ? err.stack : (err && err.message ? err.message : JSON.stringify(err)));
+    statusEl.textContent = "Something went wrong while loading (at: " + statusEl.textContent + "): " + (err && err.stack ? err.stack : (err && err.message ? err.message : String(err)));
   }
 }
 
