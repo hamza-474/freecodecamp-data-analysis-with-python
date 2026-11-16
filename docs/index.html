@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Analysis with Python — Live Projects | Hamza Madni</title>
+<style>
+  body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; background: #0d1117; color: #e6edf3; }
+  header { padding: 28px 20px 8px; text-align: center; }
+  h1 { margin: 0 0 6px; font-size: 28px; }
+  .sub { color: #9da7b3; margin: 0 0 4px; }
+  a { color: #58a6ff; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 16px 20px 48px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 20px 0; }
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px; cursor: pointer; text-align: left; color: #e6edf3; }
+  .card:hover { border-color: #58a6ff; }
+  .card.active { border-color: #58a6ff; background: #1c2330; }
+  .card b { display: block; margin-bottom: 4px; font-size: 15px; }
+  .card span { color: #9da7b3; font-size: 13px; }
+  #status { color: #f0b429; min-height: 20px; font-size: 14px; }
+  #runBtn { background: #238636; color: #fff; border: 0; border-radius: 8px; padding: 12px 26px; font-size: 16px; cursor: pointer; }
+  #runBtn:disabled { background: #30363d; cursor: wait; }
+  #nums { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #30363d; background: #161b22; color: #e6edf3; margin: 10px 0; display: none; }
+  #out { margin-top: 18px; }
+  #out pre { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px; overflow-x: auto; white-space: pre-wrap; }
+  #out img { max-width: 100%; background: #fff; border-radius: 10px; margin: 10px 0; display: block; }
+  footer { text-align: center; color: #9da7b3; font-size: 13px; padding-bottom: 28px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>📊 Data Analysis with Python — Live Projects</h1>
+  <p class="sub">Hamza Madni's five freeCodeCamp certification projects, running live in your browser.</p>
+  <p class="sub">🎓 <a href="https://www.freecodecamp.org/certification/fcc-e2b594ad-6279-46f6-b5e7-f344e25e0c82/data-analysis-with-python-v7" target="_blank" rel="noopener">Certificate</a> · 💻 <a href="https://github.com/hamza-474/freecodecamp-data-analysis-with-python" target="_blank" rel="noopener">GitHub repository</a></p>
+</header>
+<div class="wrap">
+  <div class="cards" id="cards">
+    <button class="card" data-p="mean"><b>Mean-Variance-Std Calculator</b><span>Statistics for 9 numbers, by row, column and overall.</span></button>
+    <button class="card" data-p="demographic"><b>Demographic Data Analyzer</b><span>Ten questions answered from US census data.</span></button>
+    <button class="card" data-p="medical"><b>Medical Data Visualizer</b><span>Charts from 70,000 medical examination records.</span></button>
+    <button class="card" data-p="timeseries"><b>Page View Time Series Visualizer</b><span>Forum page views drawn three ways.</span></button>
+    <button class="card" data-p="sealevel"><b>Sea Level Predictor</b><span>Sea-level rise, predicted to 2050.</span></button>
+  </div>
+  <input id="nums" value="0,1,2,3,4,5,6,7,8" aria-label="9 numbers, comma separated">
+  <p id="status">Loading Python… (first load takes a few seconds)</p>
+  <button id="runBtn" disabled>▶ Run project</button>
+  <div id="out"></div>
+</div>
+<footer>Built by Hamza Madni · Python runs entirely in your browser via Pyodide · Data: freeCodeCamp datasets</footer>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+<script>
+const RAW = "https://raw.githubusercontent.com/hamza-474/freecodecamp-data-analysis-with-python/main/";
+const statusEl = document.getElementById("status");
+const outEl = document.getElementById("out");
+const runBtn = document.getElementById("runBtn");
+const numsEl = document.getElementById("nums");
+let selected = "mean";
+let pyodide = null;
+
+document.getElementById("cards").addEventListener("click", (e) => {
+  const card = e.target.closest(".card");
+  if (!card) return;
+  selected = card.dataset.p;
+  document.querySelectorAll(".card").forEach(c => c.classList.toggle("active", c === card));
+  numsEl.style.display = selected === "mean" ? "block" : "none";
+});
+document.querySelector('.card[data-p="mean"]').classList.add("active");
+numsEl.style.display = "block";
+
+const PY_RUNNER = `
+import io, os, json, base64, contextlib
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
+def fig_b64(fig):
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", bbox_inches="tight")
+    plt.close(fig)
+    return base64.b64encode(buf.getvalue()).decode()
+
+def run_project(name, arg):
+    text, images = "", []
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        if name == "mean":
+            from mean_var_std import calculate
+            vals = [float(x) for x in arg.split(",")]
+            print(json.dumps(calculate(vals), indent=2))
+        elif name == "demographic":
+            from demographic_data_analyzer import calculate_demographic_data
+            calculate_demographic_data(print_data=True)
+        elif name == "medical":
+            from medical_data_visualizer import draw_cat_plot, draw_heat_map
+            images.append(fig_b64(draw_cat_plot()))
+            images.append(fig_b64(draw_heat_map()))
+        elif name == "timeseries":
+            from time_series_visualizer import draw_line_plot, draw_bar_plot, draw_box_plot
+            images.append(fig_b64(draw_line_plot()))
+            images.append(fig_b64(draw_bar_plot()))
+            images.append(fig_b64(draw_box_plot()))
+        elif name == "sealevel":
+            from sea_level_predictor import draw_plot
+            ax = draw_plot()
+            images.append(fig_b64(ax.figure))
+    text = buf.getvalue()
+    return json.dumps({"text": text, "images": images})
+`;
+
+async function fetchToFS(path) {
+  const res = await fetch(RAW + path);
+  if (!res.ok) throw new Error("Could not load " + path);
+  const data = new Uint8Array(await res.arrayBuffer());
+  const dir = path.split("/").slice(0, -1).join("/");
+  if (dir) { try { pyodide.FS.mkdirTree(dir); } catch (e) {} }
+  pyodide.FS.writeFile(path, data);
+  if (dir === "data") pyodide.FS.writeFile(path.split("/").pop(), data);
+}
+
+async function init() {
+  try {
+    pyodide = await loadPyodide();
+    statusEl.textContent = "Loading data libraries…";
+    await pyodide.loadPackage(["numpy", "pandas", "matplotlib"]);
+    await pyodide.runPythonAsync("import micropip\nawait micropip.install('seaborn')");
+    statusEl.textContent = "Loading project files…";
+    const files = [
+      "mean_var_std.py", "demographic_data_analyzer.py", "medical_data_visualizer.py",
+      "time_series_visualizer.py", "sea_level_predictor.py",
+      "data/adult.data.csv", "data/medical_examination.csv",
+      "data/fcc-forum-pageviews.csv", "data/epa-sea-level.csv"
+    ];
+    for (const f of files) await fetchToFS(f);
+    pyodide.runPython(PY_RUNNER);
+    statusEl.textContent = "Ready — pick a project and press Run.";
+    runBtn.disabled = false;
+  } catch (err) {
+    statusEl.textContent = "Something went wrong while loading: " + err.message;
+  }
+}
+
+runBtn.addEventListener("click", async () => {
+  runBtn.disabled = true;
+  statusEl.textContent = "Running…";
+  outEl.innerHTML = "";
+  try {
+    pyodide.globals.set("p_name", selected);
+    pyodide.globals.set("p_arg", numsEl.value || "");
+    const resultJson = await pyodide.runPythonAsync("run_project(p_name, p_arg)");
+    const result = JSON.parse(resultJson);
+    if (result.text && result.text.trim()) {
+      const pre = document.createElement("pre");
+      pre.textContent = result.text;
+      outEl.appendChild(pre);
+    }
+    for (const b64 of result.images) {
+      const img = document.createElement("img");
+      img.src = "data:image/png;base64," + b64;
+      img.alt = "Project output chart";
+      outEl.appendChild(img);
+    }
+    statusEl.textContent = "Done ✔";
+  } catch (err) {
+    statusEl.textContent = "This project hit an error: " + err.message;
+  }
+  runBtn.disabled = false;
+});
+
+init();
+</script>
+</body>
+</html>
