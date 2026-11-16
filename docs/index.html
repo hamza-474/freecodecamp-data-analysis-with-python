@@ -12,18 +12,27 @@
   a { color: #58a6ff; }
   .wrap { max-width: 880px; margin: 0 auto; padding: 16px 20px 48px; }
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 20px 0; }
-  .card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px; cursor: pointer; text-align: left; color: #e6edf3; }
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px; cursor: pointer; text-align: left; color: #e6edf3; width: 100%; }
   .card:hover { border-color: #58a6ff; }
   .card.active { border-color: #58a6ff; background: #1c2330; }
   .card b { display: block; margin-bottom: 4px; font-size: 15px; }
   .card span { color: #9da7b3; font-size: 13px; }
-  #status { color: #f0b429; min-height: 20px; font-size: 14px; }
-  #runBtn { background: #238636; color: #fff; border: 0; border-radius: 8px; padding: 12px 26px; font-size: 16px; cursor: pointer; }
-  #runBtn:disabled { background: #30363d; cursor: wait; }
-  #nums { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #30363d; background: #161b22; color: #e6edf3; margin: 10px 0; display: none; }
+  #status { color: #f0b429; min-height: 20px; font-size: 15px; }
+  #nums { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #30363d; background: #161b22; color: #e6edf3; margin: 10px 0; display: none; box-sizing: border-box; }
+  #rerun { background: #238636; color: #fff; border: 0; border-radius: 8px; padding: 10px 22px; font-size: 15px; cursor: pointer; display: none; }
   #out { margin-top: 18px; }
-  #out pre { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px; overflow-x: auto; white-space: pre-wrap; }
-  #out img { max-width: 100%; background: #fff; border-radius: 10px; margin: 10px 0; display: block; }
+  .intro { color: #c9d4e0; font-size: 16px; margin: 6px 0 12px; }
+  .qa { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 12px 14px; margin: 10px 0; }
+  .qa .q { color: #9da7b3; font-size: 13px; margin-bottom: 4px; }
+  .qa .a { font-size: 18px; font-weight: 600; }
+  .figwrap { margin: 14px 0; }
+  .figwrap img { max-width: 100%; background: #fff; border-radius: 10px; display: block; }
+  .cap { color: #9da7b3; font-size: 14px; margin-top: 6px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; background: #161b22; }
+  th, td { border: 1px solid #30363d; padding: 8px 10px; text-align: left; font-size: 14px; }
+  th { background: #1c2330; }
+  .spin { display: inline-block; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
   footer { text-align: center; color: #9da7b3; font-size: 13px; padding-bottom: 28px; }
 </style>
 </head>
@@ -31,45 +40,44 @@
 <header>
   <h1>📊 Data Analysis with Python — Live Projects</h1>
   <p class="sub">Hamza Madni's five freeCodeCamp certification projects, running live in your browser.</p>
+  <p class="sub"><b>Just tap any project below — it runs by itself and shows the result in simple words and pictures. No code, nothing to install.</b></p>
   <p class="sub">🎓 <a href="https://www.freecodecamp.org/certification/fcc-e2b594ad-6279-46f6-b5e7-f344e25e0c82/data-analysis-with-python-v7" target="_blank" rel="noopener">Certificate</a> · 💻 <a href="https://github.com/hamza-474/freecodecamp-data-analysis-with-python" target="_blank" rel="noopener">GitHub repository</a></p>
 </header>
 <div class="wrap">
   <div class="cards" id="cards">
-    <button class="card" data-p="mean"><b>Mean-Variance-Std Calculator</b><span>Statistics for 9 numbers, by row, column and overall.</span></button>
-    <button class="card" data-p="demographic"><b>Demographic Data Analyzer</b><span>Ten questions answered from US census data.</span></button>
-    <button class="card" data-p="medical"><b>Medical Data Visualizer</b><span>Charts from 70,000 medical examination records.</span></button>
-    <button class="card" data-p="timeseries"><b>Page View Time Series Visualizer</b><span>Forum page views drawn three ways.</span></button>
-    <button class="card" data-p="sealevel"><b>Sea Level Predictor</b><span>Sea-level rise, predicted to 2050.</span></button>
+    <button class="card" data-p="mean"><b>🧮 Mean-Variance-Std Calculator</b><span>Type 9 numbers — see their average, spread and totals.</span></button>
+    <button class="card" data-p="demographic"><b>👥 Demographic Data Analyzer</b><span>Simple answers about 32,561 people from US census data.</span></button>
+    <button class="card" data-p="medical"><b>❤️ Medical Data Visualizer</b><span>Health charts from 70,000 medical check-ups.</span></button>
+    <button class="card" data-p="timeseries"><b>📈 Page View Visualizer</b><span>How a forum's daily visitors changed, 2016–2019.</span></button>
+    <button class="card" data-p="sealevel"><b>🌊 Sea Level Predictor</b><span>Sea level rise — and where it reaches by 2050.</span></button>
   </div>
   <input id="nums" value="0,1,2,3,4,5,6,7,8" aria-label="9 numbers, comma separated">
+  <button id="rerun">↻ Calculate again</button>
   <p id="status">Loading Python… (first load takes a few seconds)</p>
-  <button id="runBtn" disabled>▶ Run project</button>
   <div id="out"></div>
 </div>
-<footer>Built by Hamza Madni · Python runs entirely in your browser via Pyodide · Data: freeCodeCamp datasets</footer>
+<footer>Built by Hamza Madni · Python runs entirely in your browser · Data: freeCodeCamp datasets</footer>
 
 <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
 <script>
 const RAW = "https://raw.githubusercontent.com/hamza-474/freecodecamp-data-analysis-with-python/main/";
 const statusEl = document.getElementById("status");
 const outEl = document.getElementById("out");
-const runBtn = document.getElementById("runBtn");
 const numsEl = document.getElementById("nums");
-let selected = "mean";
-let pyodide = null;
+const rerunBtn = document.getElementById("rerun");
+let pyodide = null, ready = false, busy = false;
+const loaded = { scripts: new Set(), csvs: new Set(), seaborn: false, scipy: false };
 
-document.getElementById("cards").addEventListener("click", (e) => {
-  const card = e.target.closest(".card");
-  if (!card) return;
-  selected = card.dataset.p;
-  document.querySelectorAll(".card").forEach(c => c.classList.toggle("active", c === card));
-  numsEl.style.display = selected === "mean" ? "block" : "none";
-});
-document.querySelector('.card[data-p="mean"]').classList.add("active");
-numsEl.style.display = "block";
+const PROJECTS = {
+  mean:       { scripts: ["mean_var_std.py"], csvs: [] },
+  demographic:{ scripts: ["demographic_data_analyzer.py"], csvs: ["adult.data.csv"] },
+  medical:    { scripts: ["medical_data_visualizer.py"], csvs: ["medical_examination.csv"], seaborn: true },
+  timeseries: { scripts: ["time_series_visualizer.py"], csvs: ["fcc-forum-pageviews.csv"], seaborn: true },
+  sealevel:   { scripts: ["sea_level_predictor.py"], csvs: ["epa-sea-level.csv"], scipy: true }
+};
 
 const PY_RUNNER = `
-import io, os, json, base64, contextlib
+import io, json, base64
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -81,93 +89,163 @@ def fig_b64(fig):
     return base64.b64encode(buf.getvalue()).decode()
 
 def run_project(name, arg):
-    text, images = "", []
-    buf = io.StringIO()
-    with contextlib.redirect_stdout(buf):
-        if name == "mean":
-            from mean_var_std import calculate
-            vals = [float(x) for x in arg.split(",")]
-            print(json.dumps(calculate(vals), indent=2))
-        elif name == "demographic":
-            from demographic_data_analyzer import calculate_demographic_data
-            calculate_demographic_data(print_data=True)
-        elif name == "medical":
-            from medical_data_visualizer import draw_cat_plot, draw_heat_map
-            images.append(fig_b64(draw_cat_plot()))
-            images.append(fig_b64(draw_heat_map()))
-        elif name == "timeseries":
-            from time_series_visualizer import draw_line_plot, draw_bar_plot, draw_box_plot
-            images.append(fig_b64(draw_line_plot()))
-            images.append(fig_b64(draw_bar_plot()))
-            images.append(fig_b64(draw_box_plot()))
-        elif name == "sealevel":
-            from sea_level_predictor import draw_plot
-            ax = draw_plot()
-            images.append(fig_b64(ax.figure))
-    text = buf.getvalue()
-    return json.dumps({"text": text, "images": images})
+    answers, images, captions, table = [], [], [], None
+    if name == "mean":
+        from mean_var_std import calculate
+        vals = [float(x) for x in arg.split(",")]
+        r = calculate(vals)
+        def fmt(v):
+            if isinstance(v, list):
+                return ", ".join(fmt(x) for x in v)
+            return str(round(v, 2)) if isinstance(v, float) else str(v)
+        rows = []
+        for k, v in r.items():
+            rows.append([k.title(), fmt(v[0]), fmt(v[1]), fmt(v[2])])
+        table = {"head": ["Measure", "By column", "By row", "Overall"], "rows": rows}
+    elif name == "demographic":
+        from demographic_data_analyzer import calculate_demographic_data
+        r = calculate_demographic_data(print_data=False)
+        answers = [
+            ["Average age of men", str(r["average_age_men"]) + " years"],
+            ["People with a Bachelor's degree", str(r["percentage_bachelors"]) + "%"],
+            ["With higher education, how many earn well (over $50k)?", str(r["higher_education_rich"]) + "%"],
+            ["Without higher education, how many earn well?", str(r["lower_education_rich"]) + "%"],
+            ["Shortest working week anyone has", str(r["min_work_hours"]) + " hour per week"],
+            ["Of those shortest-hour workers, how many earn well?", str(r["rich_percentage"]) + "%"],
+            ["Country where the biggest share of people earn well", str(r["highest_earning_country"]) + " — " + str(r["highest_earning_country_percentage"]) + "%"],
+            ["Most common well-paid job in India", str(r["top_IN_occupation"])],
+        ]
+        rc = r["race_count"]
+        fig, ax = plt.subplots(figsize=(8, 4))
+        ax.bar([str(i) for i in rc.index], list(rc.values), color="#3b82c4")
+        ax.set_title("How many people of each group are in the data")
+        ax.set_ylabel("People")
+        plt.xticks(rotation=15, ha="right")
+        images.append(fig_b64(fig))
+        captions.append("The data covers 32,561 people. Most are in the White group, then Black, then Asian-Pacific Islander.")
+    elif name == "medical":
+        from medical_data_visualizer import draw_cat_plot, draw_heat_map
+        images.append(fig_b64(draw_cat_plot()))
+        captions.append("Health habits compared: people with heart disease (1) and without (0). Taller bars mean more people. It compares exercise, smoking, alcohol and more.")
+        images.append(fig_b64(draw_heat_map()))
+        captions.append("How body measurements connect with each other. Numbers near 1.0 mean two things rise together — for example weight and body size.")
+    elif name == "timeseries":
+        from time_series_visualizer import draw_line_plot, draw_bar_plot, draw_box_plot
+        images.append(fig_b64(draw_line_plot()))
+        captions.append("Daily visitors to the freeCodeCamp forum, every day from 2016 to 2019 — you can see the steady growth.")
+        images.append(fig_b64(draw_bar_plot()))
+        captions.append("Average visitors in each month of each year. Later years (taller bars) got more visitors.")
+        images.append(fig_b64(draw_box_plot()))
+        captions.append("How the daily visitor numbers spread out — by year (left) and by month (right).")
+    elif name == "sealevel":
+        from sea_level_predictor import draw_plot
+        ax = draw_plot()
+        images.append(fig_b64(ax.figure))
+        captions.append("Each dot is one year's sea level since 1880. The lines continue the trend to 2050 — the sea keeps rising, and faster in recent years (green line).")
+    return json.dumps({"answers": answers, "images": images, "captions": captions, "table": table})
 `;
 
-async function fetchToFS(path) {
-  let res; try { res = await fetch(RAW + path); } catch (e) { throw new Error("fetch failed for " + path + ": " + (e && e.message ? e.message : String(e))); }
+async function fetchToFS(path, subdir) {
+  const res = await fetch(RAW + path);
   if (!res.ok) throw new Error("Could not load " + path);
   const data = new Uint8Array(await res.arrayBuffer());
-  // write by basename so the Python modules can open the file by name
-  // (no subdirectories are created)
+  if (subdir) {
+    try { pyodide.FS.mkdir(subdir); } catch (e) {}
+    pyodide.FS.writeFile(subdir + "/" + path.split("/").pop(), data);
+  }
   pyodide.FS.writeFile(path.split("/").pop(), data);
-  // (single copy is enough)
 }
 
-async function init() {
-  try {
-    pyodide = await loadPyodide();
-    statusEl.textContent = "Loading data libraries…";
-    await pyodide.loadPackage(["numpy", "pandas", "matplotlib", "micropip"]);
-    await pyodide.runPythonAsync("import micropip\npass  # seaborn is installed on demand by the medical project");
-    statusEl.textContent = "Loading project files…";
-    const files = [
-      "mean_var_std.py", "demographic_data_analyzer.py", "medical_data_visualizer.py",
-      "time_series_visualizer.py", "sea_level_predictor.py",
-      // data files are fetched on demand in the Run handler
-      // (data loads on demand in the Run handler)
-    ];
-    for (const f of files) { statusEl.textContent = "Loading project files… " + f; await fetchToFS(f); }
-    statusEl.textContent = "Starting the Python runner…"; pyodide.runPython(PY_RUNNER);
-    statusEl.textContent = "Ready — pick a project and press Run.";
-    runBtn.disabled = false;
-  } catch (err) {
-    statusEl.textContent = "Something went wrong while loading (at: " + statusEl.textContent + "): " + (err && err.stack ? err.stack : (err && err.message ? err.message : String(err)));
+async function ensureProject(name) {
+  const p = PROJECTS[name];
+  for (const s of p.scripts) {
+    if (!loaded.scripts.has(s)) { await fetchToFS(s, null); loaded.scripts.add(s); }
+  }
+  for (const c of p.csvs) {
+    if (!loaded.csvs.has(c)) { await fetchToFS("data/" + c, "data"); loaded.csvs.add(c); }
+  }
+  if (p.seaborn && !loaded.seaborn) {
+    statusEl.innerHTML = '<span class="spin">⏳</span> Loading chart tools…';
+    await pyodide.runPythonAsync("import micropip\nawait micropip.install('seaborn')");
+    loaded.seaborn = true;
+  }
+  if (p.scipy && !loaded.scipy) {
+    statusEl.innerHTML = '<span class="spin">⏳</span> Loading science tools…';
+    await pyodide.loadPackage("scipy");
+    loaded.scipy = true;
   }
 }
 
-runBtn.addEventListener("click", async () => {
-  runBtn.disabled = true;
-  if (selected === "sealevel") { statusEl.textContent = "Loading scipy…"; await pyodide.loadPackage("scipy"); } if (selected === "medical") { statusEl.textContent = "Installing seaborn…"; await pyodide.loadPackage("micropip"); await pyodide.pyimport("micropip").install("seaborn"); } statusEl.textContent = "Running…";
+function render(result) {
+  outEl.innerHTML = "";
+  if (result.table) {
+    const t = document.createElement("table");
+    const thead = document.createElement("tr");
+    result.table.head.forEach(h => { const th = document.createElement("th"); th.textContent = h; thead.appendChild(th); });
+    t.appendChild(thead);
+    result.table.rows.forEach(row => {
+      const tr = document.createElement("tr");
+      row.forEach(c => { const td = document.createElement("td"); td.textContent = c; tr.appendChild(td); });
+      t.appendChild(tr);
+    });
+    outEl.appendChild(t);
+  }
+  result.answers.forEach(([q, a]) => {
+    const d = document.createElement("div"); d.className = "qa";
+    const qd = document.createElement("div"); qd.className = "q"; qd.textContent = q;
+    const ad = document.createElement("div"); ad.className = "a"; ad.textContent = a;
+    d.appendChild(qd); d.appendChild(ad); outEl.appendChild(d);
+  });
+  result.images.forEach((b64, i) => {
+    const w = document.createElement("div"); w.className = "figwrap";
+    const img = document.createElement("img");
+    img.src = "data:image/png;base64," + b64;
+    img.alt = "Project result chart";
+    w.appendChild(img);
+    if (result.captions[i]) { const c = document.createElement("div"); c.className = "cap"; c.textContent = result.captions[i]; w.appendChild(c); }
+    outEl.appendChild(w);
+  });
+}
+
+async function run(name) {
+  if (!ready || busy) return;
+  busy = true;
+  document.querySelectorAll(".card").forEach(c => c.classList.toggle("active", c.dataset.p === name));
+  numsEl.style.display = name === "mean" ? "block" : "none";
+  rerunBtn.style.display = name === "mean" ? "inline-block" : "none";
+  statusEl.innerHTML = '<span class="spin">⏳</span> Working on it — the project is running now…';
   outEl.innerHTML = "";
   try {
-    if (selected === "demographic") { statusEl.textContent = "Loading census data…"; await fetchToFS("data/adult.data.csv"); } if (selected === "medical") { statusEl.textContent = "Loading medical data…"; await fetchToFS("data/medical_examination.csv"); } if (selected === "timeseries") { statusEl.textContent = "Loading page-view data…"; await fetchToFS("data/fcc-forum-pageviews.csv"); } if (selected === "sealevel") { statusEl.textContent = "Loading sea-level data…"; await fetchToFS("data/epa-sea-level.csv"); } pyodide.globals.set("p_name", selected);
+    await ensureProject(name);
+    pyodide.globals.set("p_name", name);
     pyodide.globals.set("p_arg", numsEl.value || "");
-    const resultJson = await pyodide.runPythonAsync("run_project(p_name, p_arg)");
-    const result = JSON.parse(resultJson);
-    if (result.text && result.text.trim()) {
-      const pre = document.createElement("pre");
-      pre.textContent = result.text;
-      outEl.appendChild(pre);
-    }
-    for (const b64 of result.images) {
-      const img = document.createElement("img");
-      img.src = "data:image/png;base64," + b64;
-      img.alt = "Project output chart";
-      outEl.appendChild(img);
-    }
-    statusEl.textContent = "Done ✔";
+    const result = JSON.parse(await pyodide.runPythonAsync("run_project(p_name, p_arg)"));
+    render(result);
+    statusEl.textContent = "Done ✔ — here is the result:";
   } catch (err) {
-    statusEl.textContent = "This project hit an error: " + (err && err.message ? err.message : String(err));
+    statusEl.textContent = "This project hit an error: " + err.message;
   }
-  runBtn.disabled = false;
-});
+  busy = false;
+}
 
-init();
+document.getElementById("cards").addEventListener("click", (e) => {
+  const card = e.target.closest(".card");
+  if (card) run(card.dataset.p);
+});
+rerunBtn.addEventListener("click", () => run("mean"));
+
+(async function init() {
+  try {
+    pyodide = await loadPyodide();
+    statusEl.innerHTML = '<span class="spin">⏳</span> Loading data libraries…';
+    await pyodide.loadPackage(["numpy", "pandas", "matplotlib", "micropip"]);
+    pyodide.runPython(PY_RUNNER);
+    ready = true;
+    statusEl.textContent = "Ready ✔ — tap any project above and it runs by itself.";
+  } catch (err) {
+    statusEl.textContent = "Something went wrong while loading: " + err.message;
+  }
+})();
 </script>
 </body>
 </html>
