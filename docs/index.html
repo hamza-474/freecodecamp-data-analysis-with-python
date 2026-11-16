@@ -122,8 +122,8 @@ async function init() {
   try {
     pyodide = await loadPyodide();
     statusEl.textContent = "Loading data libraries…";
-    await pyodide.loadPackage(["numpy", "pandas", "matplotlib"]);
-    await pyodide.runPythonAsync("import micropip\nawait micropip.install('seaborn')");
+    await pyodide.loadPackage(["numpy", "pandas", "matplotlib", "scipy", "seaborn", "micropip"]);
+    await pyodide.runPythonAsync("import micropip\npass");
     statusEl.textContent = "Loading project files…";
     const files = [
       "mean_var_std.py", "demographic_data_analyzer.py", "medical_data_visualizer.py",
