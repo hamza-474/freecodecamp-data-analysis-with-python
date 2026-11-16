@@ -2,15 +2,25 @@
 
 These are Hamza Madni's five projects for the [freeCodeCamp Data Analysis with Python Developer Certification](https://www.freecodecamp.org/certification/fcc-e2b594ad-6279-46f6-b5e7-f344e25e0c82/data-analysis-with-python-v7).
 
+## ▶ Live demo — run in your browser (Google Colab)
+
+Click **Open in Colab** to run any project live in your browser — no installation needed. Each notebook in [`notebooks/`](notebooks/) loads its project script and dataset from this repo and runs it, displaying the output and charts.
+
+- Mean-Variance-Standard Deviation Calculator — [Open in Colab](https://colab.research.google.com/github/hamza-474/freecodecamp-data-analysis-with-python/blob/main/notebooks/Mean_Variance_Standard_Deviation_Calculator.ipynb)
+- Demographic Data Analyzer — [Open in Colab](https://colab.research.google.com/github/hamza-474/freecodecamp-data-analysis-with-python/blob/main/notebooks/Demographic_Data_Analyzer.ipynb)
+- Medical Data Visualizer — [Open in Colab](https://colab.research.google.com/github/hamza-474/freecodecamp-data-analysis-with-python/blob/main/notebooks/Medical_Data_Visualizer.ipynb)
+- Page View Time Series Visualizer — [Open in Colab](https://colab.research.google.com/github/hamza-474/freecodecamp-data-analysis-with-python/blob/main/notebooks/Page_View_Time_Series_Visualizer.ipynb)
+- Sea Level Predictor — [Open in Colab](https://colab.research.google.com/github/hamza-474/freecodecamp-data-analysis-with-python/blob/main/notebooks/Sea_Level_Predictor.ipynb)
+
 ## Projects
 
-| Project | File | What it does |
-| --- | --- | --- |
-| Mean-Variance-Standard Deviation Calculator | `mean_var_std.py` | Calculates the mean, variance, standard deviation, max, min, and sum of a 3x3 matrix, row-wise, column-wise, and overall, using NumPy. |
-| Demographic Data Analyzer | `demographic_data_analyzer.py` | Analyzes the UCI Adult census dataset with Pandas — demographics, education, income, occupations, and countries. |
-| Medical Data Visualizer | `medical_data_visualizer.py` | Builds a categorical plot and a correlation heatmap from medical examination data with Seaborn and Matplotlib. |
-| Page View Time Series Visualizer | `time_series_visualizer.py` | Draws line, bar, and box plots of freeCodeCamp forum page views over time. |
-| Sea Level Predictor | `sea_level_predictor.py` | Plots historical sea-level data and two lines of best fit predicting the rise through 2050. |
+| Project | File | What it does | Live demo |
+| --- | --- | --- | --- |
+| Mean-Variance-Standard Deviation Calculator | `mean_var_std.py` | Calculates the mean, variance, standard deviation, max, min, and sum of a 3x3 matrix, row-wise, column-wise, and overall, using NumPy. | [Open in Colab](https://colab.research.google.com/github/hamza-474/freecodecamp-data-analysis-with-python/blob/main/notebooks/Mean_Variance_Standard_Deviation_Calculator.ipynb) |
+| Demographic Data Analyzer | `demographic_data_analyzer.py` | Analyzes the UCI Adult census dataset with Pandas — demographics, education, income, occupations, and countries. | [Open in Colab](https://colab.research.google.com/github/hamza-474/freecodecamp-data-analysis-with-python/blob/main/notebooks/Demographic_Data_Analyzer.ipynb) |
+| Medical Data Visualizer | `medical_data_visualizer.py` | Builds a categorical plot and a correlation heatmap from medical examination data with Seaborn and Matplotlib. | [Open in Colab](https://colab.research.google.com/github/hamza-474/freecodecamp-data-analysis-with-python/blob/main/notebooks/Medical_Data_Visualizer.ipynb) |
+| Page View Time Series Visualizer | `time_series_visualizer.py` | Draws line, bar, and box plots of freeCodeCamp forum page views over time. | [Open in Colab](https://colab.research.google.com/github/hamza-474/freecodecamp-data-analysis-with-python/blob/main/notebooks/Page_View_Time_Series_Visualizer.ipynb) |
+| Sea Level Predictor | `sea_level_predictor.py` | Plots historical sea-level data and two lines of best fit predicting the rise through 2050. | [Open in Colab](https://colab.research.google.com/github/hamza-474/freecodecamp-data-analysis-with-python/blob/main/notebooks/Sea_Level_Predictor.ipynb) |
 
 ## Datasets
 
