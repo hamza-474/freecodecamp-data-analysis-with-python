@@ -122,7 +122,7 @@ async function init() {
   try {
     pyodide = await loadPyodide();
     statusEl.textContent = "Loading data libraries…";
-    await pyodide.loadPackage(["numpy", "pandas", "matplotlib", "scipy", "micropip"]);
+    await pyodide.loadPackage(["numpy", "pandas", "matplotlib", "micropip"]);
     await pyodide.runPythonAsync("import micropip\npass  # seaborn is installed on demand by the medical project");
     statusEl.textContent = "Loading project files…";
     const files = [
@@ -136,13 +136,13 @@ async function init() {
     statusEl.textContent = "Ready — pick a project and press Run.";
     runBtn.disabled = false;
   } catch (err) {
-    statusEl.textContent = "Something went wrong while loading: " + (err && err.message ? err.message : String(err));
+    statusEl.textContent = "Something went wrong while loading (at: " + statusEl.textContent + "): " + (err && err.stack ? err.stack : (err && err.message ? err.message : JSON.stringify(err)));
   }
 }
 
 runBtn.addEventListener("click", async () => {
   runBtn.disabled = true;
-  statusEl.textContent = "Running…";
+  if (selected === "sealevel") { statusEl.textContent = "Loading scipy…"; await pyodide.loadPackage("scipy"); } if (selected === "medical") { statusEl.textContent = "Installing seaborn…"; await pyodide.loadPackage("micropip"); await pyodide.pyimport("micropip").install("seaborn"); } statusEl.textContent = "Running…";
   outEl.innerHTML = "";
   try {
     pyodide.globals.set("p_name", selected);
