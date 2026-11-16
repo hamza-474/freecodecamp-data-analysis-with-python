@@ -18,19 +18,36 @@
   .card b { display: block; margin-bottom: 4px; font-size: 15px; }
   .card span { color: #9da7b3; font-size: 13px; }
   #status { color: #f0b429; min-height: 20px; font-size: 15px; }
-  #nums { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #30363d; background: #161b22; color: #e6edf3; margin: 10px 0; display: none; box-sizing: border-box; }
-  #rerun { background: #238636; color: #fff; border: 0; border-radius: 8px; padding: 10px 22px; font-size: 15px; cursor: pointer; display: none; }
-  #out { margin-top: 18px; }
+  #out { margin-top: 14px; }
   .intro { color: #c9d4e0; font-size: 16px; margin: 6px 0 12px; }
-  .qa { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 12px 14px; margin: 10px 0; }
-  .qa .q { color: #9da7b3; font-size: 13px; margin-bottom: 4px; }
-  .qa .a { font-size: 18px; font-weight: 600; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .chip { background: #161b22; border: 1px solid #30363d; color: #e6edf3; border-radius: 999px; padding: 9px 14px; font-size: 14px; cursor: pointer; }
+  .chip:hover { border-color: #58a6ff; }
+  .chip.on { background: #1f6feb; border-color: #1f6feb; color: #fff; }
+  .big { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 18px; margin: 12px 0; }
+  .big .q { color: #9da7b3; font-size: 14px; margin-bottom: 6px; }
+  .big .a { font-size: 26px; font-weight: 700; }
   .figwrap { margin: 14px 0; }
   .figwrap img { max-width: 100%; background: #fff; border-radius: 10px; display: block; }
   .cap { color: #9da7b3; font-size: 14px; margin-top: 6px; }
   table { border-collapse: collapse; width: 100%; margin: 12px 0; background: #161b22; }
   th, td { border: 1px solid #30363d; padding: 8px 10px; text-align: left; font-size: 14px; }
   th { background: #1c2330; }
+  /* calculator */
+  .calc { background: #161b22; border: 1px solid #30363d; border-radius: 14px; padding: 16px; max-width: 420px; margin: 12px 0; }
+  .grid9 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
+  .cell { background: #0d1117; border: 2px solid #30363d; border-radius: 8px; min-height: 52px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 600; cursor: pointer; }
+  .cell.cur { border-color: #f0b429; }
+  .cell.filled { border-color: #238636; }
+  .screen { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 10px 12px; font-size: 22px; min-height: 30px; text-align: right; margin-bottom: 10px; }
+  .screen small { display: block; text-align: left; color: #9da7b3; font-size: 12px; }
+  .keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .key { background: #21262d; border: 1px solid #30363d; color: #e6edf3; border-radius: 8px; padding: 14px 0; font-size: 18px; cursor: pointer; }
+  .key:hover { border-color: #58a6ff; }
+  .key.op { background: #8957e5; border-color: #8957e5; color: #fff; }
+  .key.go { background: #238636; border-color: #238636; color: #fff; }
+  .key.warn { background: #b62324; border-color: #b62324; color: #fff; }
+  input[type=range] { width: 100%; margin: 10px 0; }
   .spin { display: inline-block; animation: pulse 1s infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
   footer { text-align: center; color: #9da7b3; font-size: 13px; padding-bottom: 28px; }
@@ -40,19 +57,17 @@
 <header>
   <h1>📊 Data Analysis with Python — Live Projects</h1>
   <p class="sub">Hamza Madni's five freeCodeCamp certification projects, running live in your browser.</p>
-  <p class="sub"><b>Just tap any project below — it runs by itself and shows the result in simple words and pictures. No code, nothing to install.</b></p>
+  <p class="sub"><b>Tap any project — everything is clickable. Change things and watch the answers change. No code, nothing to install.</b></p>
   <p class="sub">🎓 <a href="https://www.freecodecamp.org/certification/fcc-e2b594ad-6279-46f6-b5e7-f344e25e0c82/data-analysis-with-python-v7" target="_blank" rel="noopener">Certificate</a> · 💻 <a href="https://github.com/hamza-474/freecodecamp-data-analysis-with-python" target="_blank" rel="noopener">GitHub repository</a></p>
 </header>
 <div class="wrap">
   <div class="cards" id="cards">
-    <button class="card" data-p="mean"><b>🧮 Mean-Variance-Std Calculator</b><span>Type 9 numbers — see their average, spread and totals.</span></button>
-    <button class="card" data-p="demographic"><b>👥 Demographic Data Analyzer</b><span>Simple answers about 32,561 people from US census data.</span></button>
-    <button class="card" data-p="medical"><b>❤️ Medical Data Visualizer</b><span>Health charts from 70,000 medical check-ups.</span></button>
-    <button class="card" data-p="timeseries"><b>📈 Page View Visualizer</b><span>How a forum's daily visitors changed, 2016–2019.</span></button>
-    <button class="card" data-p="sealevel"><b>🌊 Sea Level Predictor</b><span>Sea level rise — and where it reaches by 2050.</span></button>
+    <button class="card" data-p="mean"><b>🧮 Calculator</b><span>A real calculator — tap the keys, type 9 numbers, see the statistics.</span></button>
+    <button class="card" data-p="demographic"><b>👥 Demographic Analyzer</b><span>Tap a question, get its answer — about 32,561 people.</span></button>
+    <button class="card" data-p="medical"><b>❤️ Medical Visualizer</b><span>Switch between health charts from 70,000 check-ups.</span></button>
+    <button class="card" data-p="timeseries"><b>📈 Page View Visualizer</b><span>Switch between three views of forum visitors, 2016–2019.</span></button>
+    <button class="card" data-p="sealevel"><b>🌊 Sea Level Predictor</b><span>Move the year slider — see the predicted sea level.</span></button>
   </div>
-  <input id="nums" value="0,1,2,3,4,5,6,7,8" aria-label="9 numbers, comma separated">
-  <button id="rerun">↻ Calculate again</button>
   <p id="status">Loading Python… (first load takes a few seconds)</p>
   <div id="out"></div>
 </div>
@@ -63,10 +78,9 @@
 const RAW = "https://raw.githubusercontent.com/hamza-474/freecodecamp-data-analysis-with-python/main/";
 const statusEl = document.getElementById("status");
 const outEl = document.getElementById("out");
-const numsEl = document.getElementById("nums");
-const rerunBtn = document.getElementById("rerun");
-let pyodide = null, ready = false, busy = false;
+let pyodide = null, ready = false, busy = false, current = null;
 const loaded = { scripts: new Set(), csvs: new Set(), seaborn: false, scipy: false };
+const cache = {};
 
 const PROJECTS = {
   mean:       { scripts: ["mean_var_std.py"], csvs: [] },
@@ -89,7 +103,7 @@ def fig_b64(fig):
     return base64.b64encode(buf.getvalue()).decode()
 
 def run_project(name, arg):
-    answers, images, captions, table = [], [], [], None
+    answers, images, captions, table, fit = [], [], [], None, None
     if name == "mean":
         from mean_var_std import calculate
         vals = [float(x) for x in arg.split(",")]
@@ -106,14 +120,14 @@ def run_project(name, arg):
         from demographic_data_analyzer import calculate_demographic_data
         r = calculate_demographic_data(print_data=False)
         answers = [
-            ["Average age of men", str(r["average_age_men"]) + " years"],
-            ["People with a Bachelor's degree", str(r["percentage_bachelors"]) + "%"],
-            ["With higher education, how many earn well (over $50k)?", str(r["higher_education_rich"]) + "%"],
-            ["Without higher education, how many earn well?", str(r["lower_education_rich"]) + "%"],
-            ["Shortest working week anyone has", str(r["min_work_hours"]) + " hour per week"],
-            ["Of those shortest-hour workers, how many earn well?", str(r["rich_percentage"]) + "%"],
-            ["Country where the biggest share of people earn well", str(r["highest_earning_country"]) + " — " + str(r["highest_earning_country_percentage"]) + "%"],
-            ["Most common well-paid job in India", str(r["top_IN_occupation"])],
+            ["Men's average age", "Average age of men", str(r["average_age_men"]) + " years"],
+            ["Bachelor's %", "People with a Bachelor's degree", str(r["percentage_bachelors"]) + "%"],
+            ["Rich with degree", "With higher education, how many earn well (over $50k)?", str(r["higher_education_rich"]) + "%"],
+            ["Rich without degree", "Without higher education, how many earn well?", str(r["lower_education_rich"]) + "%"],
+            ["Shortest work week", "Shortest working week anyone has", str(r["min_work_hours"]) + " hour per week"],
+            ["Shortest-hour rich %", "Of those shortest-hour workers, how many earn well?", str(r["rich_percentage"]) + "%"],
+            ["Top earning country", "Country where the biggest share of people earn well", str(r["highest_earning_country"]) + " — " + str(r["highest_earning_country_percentage"]) + "%"],
+            ["Top job in India", "Most common well-paid job in India", str(r["top_IN_occupation"])],
         ]
         rc = r["race_count"]
         fig, ax = plt.subplots(figsize=(8, 4))
@@ -126,23 +140,29 @@ def run_project(name, arg):
     elif name == "medical":
         from medical_data_visualizer import draw_cat_plot, draw_heat_map
         images.append(fig_b64(draw_cat_plot()))
-        captions.append("Health habits compared: people with heart disease (1) and without (0). Taller bars mean more people. It compares exercise, smoking, alcohol and more.")
+        captions.append("Health habits compared: people with heart disease (1) and without (0). Taller bars mean more people — exercise, smoking, alcohol and more.")
         images.append(fig_b64(draw_heat_map()))
-        captions.append("How body measurements connect with each other. Numbers near 1.0 mean two things rise together — for example weight and body size.")
+        captions.append("How body measurements connect. Numbers near 1.0 mean two things rise together — for example weight and body size.")
     elif name == "timeseries":
         from time_series_visualizer import draw_line_plot, draw_bar_plot, draw_box_plot
         images.append(fig_b64(draw_line_plot()))
-        captions.append("Daily visitors to the freeCodeCamp forum, every day from 2016 to 2019 — you can see the steady growth.")
+        captions.append("Daily visitors to the freeCodeCamp forum, 2016 to 2019 — steady growth over the years.")
         images.append(fig_b64(draw_bar_plot()))
-        captions.append("Average visitors in each month of each year. Later years (taller bars) got more visitors.")
+        captions.append("Average visitors in each month of each year. Taller bars in later years mean more visitors.")
         images.append(fig_b64(draw_box_plot()))
-        captions.append("How the daily visitor numbers spread out — by year (left) and by month (right).")
+        captions.append("How daily visitor numbers spread out — by year (left) and by month (right).")
     elif name == "sealevel":
         from sea_level_predictor import draw_plot
         ax = draw_plot()
         images.append(fig_b64(ax.figure))
-        captions.append("Each dot is one year's sea level since 1880. The lines continue the trend to 2050 — the sea keeps rising, and faster in recent years (green line).")
-    return json.dumps({"answers": answers, "images": images, "captions": captions, "table": table})
+        captions.append("Each dot is one year's sea level since 1880. The lines continue the trend to 2050 — rising faster in recent years (green line).")
+        import pandas as pd
+        from scipy.stats import linregress
+        df = pd.read_csv("epa-sea-level.csv")
+        recent = df[df["Year"] >= 2000]
+        res = linregress(recent["Year"], recent["CSIRO Adjusted Sea Level"])
+        fit = {"slope": res.slope, "intercept": res.intercept}
+    return json.dumps({"answers": answers, "images": images, "captions": captions, "table": table, "fit": fit})
 `;
 
 async function fetchToFS(path, subdir) {
@@ -176,63 +196,185 @@ async function ensureProject(name) {
   }
 }
 
-function render(result) {
-  outEl.innerHTML = "";
-  if (result.table) {
-    const t = document.createElement("table");
-    const thead = document.createElement("tr");
-    result.table.head.forEach(h => { const th = document.createElement("th"); th.textContent = h; thead.appendChild(th); });
-    t.appendChild(thead);
-    result.table.rows.forEach(row => {
-      const tr = document.createElement("tr");
-      row.forEach(c => { const td = document.createElement("td"); td.textContent = c; tr.appendChild(td); });
-      t.appendChild(tr);
-    });
-    outEl.appendChild(t);
-  }
-  result.answers.forEach(([q, a]) => {
-    const d = document.createElement("div"); d.className = "qa";
-    const qd = document.createElement("div"); qd.className = "q"; qd.textContent = q;
-    const ad = document.createElement("div"); ad.className = "a"; ad.textContent = a;
-    d.appendChild(qd); d.appendChild(ad); outEl.appendChild(d);
-  });
-  result.images.forEach((b64, i) => {
-    const w = document.createElement("div"); w.className = "figwrap";
-    const img = document.createElement("img");
-    img.src = "data:image/png;base64," + b64;
-    img.alt = "Project result chart";
-    w.appendChild(img);
-    if (result.captions[i]) { const c = document.createElement("div"); c.className = "cap"; c.textContent = result.captions[i]; w.appendChild(c); }
-    outEl.appendChild(w);
-  });
+async function compute(name, arg) {
+  await ensureProject(name);
+  pyodide.globals.set("p_name", name);
+  pyodide.globals.set("p_arg", arg || "");
+  return JSON.parse(await pyodide.runPythonAsync("run_project(p_name, p_arg)"));
 }
 
-async function run(name) {
+function el(tag, cls, text) {
+  const d = document.createElement(tag);
+  if (cls) d.className = cls;
+  if (text !== undefined) d.textContent = text;
+  return d;
+}
+function figBlock(b64, cap) {
+  const w = el("div", "figwrap");
+  const img = document.createElement("img");
+  img.src = "data:image/png;base64," + b64;
+  img.alt = "Project result chart";
+  w.appendChild(img);
+  if (cap) w.appendChild(el("div", "cap", cap));
+  return w;
+}
+function tableBlock(t) {
+  const tb = document.createElement("table");
+  const tr = document.createElement("tr");
+  t.head.forEach(h => tr.appendChild(el("th", null, h)));
+  tb.appendChild(tr);
+  t.rows.forEach(row => {
+    const r = document.createElement("tr");
+    row.forEach(c => r.appendChild(el("td", null, c)));
+    tb.appendChild(r);
+  });
+  return tb;
+}
+
+/* ---------- Calculator ---------- */
+const calc = { cells: Array(9).fill(null), cur: 0, input: "" };
+function renderCalc(resultTable) {
+  outEl.innerHTML = "";
+  outEl.appendChild(el("p", "intro", "Tap the number keys to fill the 9 boxes (a 3×3 square). The answers appear below — change any number and they change too."));
+  const box = el("div", "calc");
+  const grid = el("div", "grid9");
+  calc.cells.forEach((v, i) => {
+    const c = el("div", "cell" + (i === calc.cur ? " cur" : "") + (v !== null ? " filled" : ""), v === null ? "·" : String(v));
+    c.addEventListener("click", () => { calc.cur = i; calc.input = calc.cells[i] === null ? "" : String(calc.cells[i]); renderCalc(cache.mean ? cache.mean.table : null); });
+    grid.appendChild(c);
+  });
+  box.appendChild(grid);
+  const scr = el("div", "screen");
+  const sm = el("small", null, "Box " + (calc.cur + 1) + " of 9 — typing:");
+  scr.appendChild(sm);
+  scr.appendChild(document.createTextNode(calc.input === "" ? "0" : calc.input));
+  box.appendChild(scr);
+  const keys = el("div", "keys");
+  ["7","8","9","⌫","4","5","6","C","1","2","3","±",".","0","⏎"].forEach(k => {
+    const b = el("button", "key" + (k === "⏎" ? " go" : (k === "C" || k === "⌫" ? " warn" : (k === "±" || k === "." ? " op" : ""))), k === "⏎" ? "⏎ Next" : k);
+    if (k === "⏎") b.style.gridColumn = "span 2";
+    b.addEventListener("click", () => calcKey(k));
+    keys.appendChild(b);
+  });
+  box.appendChild(keys);
+  outEl.appendChild(box);
+  if (resultTable) outEl.appendChild(tableBlock(resultTable));
+}
+async function calcKey(k) {
+  if (k === "C") { calc.cells = Array(9).fill(null); calc.cur = 0; calc.input = ""; cache.mean = null; renderCalc(null); return; }
+  if (k === "⌫") { calc.input = calc.input.slice(0, -1); renderCalc(cache.mean ? cache.mean.table : null); return; }
+  if (k === "±") { calc.input = calc.input.startsWith("-") ? calc.input.slice(1) : (calc.input ? "-" + calc.input : "-"); renderCalc(cache.mean ? cache.mean.table : null); return; }
+  if (k === "⏎") {
+    if (calc.input !== "" && calc.input !== "-" && calc.input !== ".") {
+      calc.cells[calc.cur] = parseFloat(calc.input);
+    }
+    calc.input = "";
+    const next = calc.cells.indexOf(null);
+    calc.cur = next === -1 ? calc.cur : next;
+    if (calc.cells.every(v => v !== null)) {
+      statusEl.innerHTML = '<span class="spin">⏳</span> Calculating…';
+      try {
+        cache.mean = await compute("mean", calc.cells.join(","));
+        statusEl.textContent = "Done ✔ — answers below. Tap any box to change its number.";
+      } catch (e) { statusEl.textContent = "Error: " + e.message; }
+    }
+    renderCalc(cache.mean ? cache.mean.table : null);
+    return;
+  }
+  if (k === "." && calc.input.includes(".")) return;
+  if (calc.input.replace("-", "").replace(".", "").length >= 6) return;
+  calc.input += k;
+  renderCalc(cache.mean ? cache.mean.table : null);
+}
+document.addEventListener("keydown", (e) => {
+  if (current !== "mean") return;
+  if (/^[0-9.]$/.test(e.key)) calcKey(e.key);
+  else if (e.key === "Backspace") calcKey("⌫");
+  else if (e.key === "Enter") calcKey("⏎");
+});
+
+/* ---------- Demographic ---------- */
+function renderDemographic(res, sel) {
+  outEl.innerHTML = "";
+  outEl.appendChild(el("p", "intro", "Tap a question — its answer appears big below. One dataset, eight questions."));
+  const chips = el("div", "chips");
+  res.answers.forEach((a, i) => {
+    const b = el("button", "chip" + (i === sel ? " on" : ""), a[0]);
+    b.addEventListener("click", () => renderDemographic(res, i));
+    chips.appendChild(b);
+  });
+  const cb = el("button", "chip" + (sel === "chart" ? " on" : ""), "📊 People chart");
+  cb.addEventListener("click", () => renderDemographic(res, "chart"));
+  chips.appendChild(cb);
+  outEl.appendChild(chips);
+  if (sel === "chart") {
+    outEl.appendChild(figBlock(res.images[0], res.captions[0]));
+  } else {
+    const big = el("div", "big");
+    big.appendChild(el("div", "q", res.answers[sel][1]));
+    big.appendChild(el("div", "a", res.answers[sel][2]));
+    outEl.appendChild(big);
+  }
+}
+
+/* ---------- Chart switchers (medical / timeseries) ---------- */
+function renderSwitcher(res, labels, sel) {
+  outEl.innerHTML = "";
+  const chips = el("div", "chips");
+  labels.forEach((lab, i) => {
+    const b = el("button", "chip" + (i === sel ? " on" : ""), lab);
+    b.addEventListener("click", () => renderSwitcher(res, labels, i));
+    chips.appendChild(b);
+  });
+  outEl.appendChild(chips);
+  outEl.appendChild(figBlock(res.images[sel], res.captions[sel]));
+}
+
+/* ---------- Sea level ---------- */
+function renderSealevel(res, year) {
+  outEl.innerHTML = "";
+  outEl.appendChild(el("p", "intro", "Move the slider to a future year — the predicted sea level changes with it."));
+  outEl.appendChild(figBlock(res.images[0], res.captions[0]));
+  const big = el("div", "big");
+  const pred = res.fit.intercept + res.fit.slope * year;
+  big.appendChild(el("div", "q", "Predicted sea level in the year " + year + " (following the recent-years trend):"));
+  big.appendChild(el("div", "a", "≈ " + pred.toFixed(1) + " inches (≈ " + (pred * 2.54).toFixed(0) + " cm) higher than in 1880"));
+  outEl.appendChild(big);
+  const slider = document.createElement("input");
+  slider.type = "range"; slider.min = "2020"; slider.max = "2050"; slider.step = "1"; slider.value = String(year);
+  slider.addEventListener("input", () => renderSealevel(res, parseInt(slider.value)));
+  outEl.appendChild(slider);
+}
+
+/* ---------- Project switching ---------- */
+async function openProject(name) {
   if (!ready || busy) return;
-  busy = true;
+  current = name;
   document.querySelectorAll(".card").forEach(c => c.classList.toggle("active", c.dataset.p === name));
-  numsEl.style.display = name === "mean" ? "block" : "none";
-  rerunBtn.style.display = name === "mean" ? "inline-block" : "none";
-  statusEl.innerHTML = '<span class="spin">⏳</span> Working on it — the project is running now…';
+  if (name === "mean") { renderCalc(cache.mean ? cache.mean.table : null); statusEl.textContent = "Calculator ready — tap the keys."; return; }
+  if (cache[name]) { showResult(name, cache[name]); return; }
+  busy = true;
+  statusEl.innerHTML = '<span class="spin">⏳</span> Running the project…';
   outEl.innerHTML = "";
   try {
-    await ensureProject(name);
-    pyodide.globals.set("p_name", name);
-    pyodide.globals.set("p_arg", numsEl.value || "");
-    const result = JSON.parse(await pyodide.runPythonAsync("run_project(p_name, p_arg)"));
-    render(result);
-    statusEl.textContent = "Done ✔ — here is the result:";
+    cache[name] = await compute(name, "");
+    statusEl.textContent = "Done ✔ — everything below is clickable.";
+    showResult(name, cache[name]);
   } catch (err) {
     statusEl.textContent = "This project hit an error: " + err.message;
   }
   busy = false;
 }
-
+function showResult(name, res) {
+  if (name === "demographic") renderDemographic(res, 0);
+  else if (name === "medical") renderSwitcher(res, ["❤️ Habits chart", "🔗 Connections chart"], 0);
+  else if (name === "timeseries") renderSwitcher(res, ["📈 Daily line", "📊 Monthly bars", "📦 Spread boxes"], 0);
+  else if (name === "sealevel") renderSealevel(res, 2035);
+}
 document.getElementById("cards").addEventListener("click", (e) => {
   const card = e.target.closest(".card");
-  if (card) run(card.dataset.p);
+  if (card) openProject(card.dataset.p);
 });
-rerunBtn.addEventListener("click", () => run("mean"));
 
 (async function init() {
   try {
@@ -241,7 +383,7 @@ rerunBtn.addEventListener("click", () => run("mean"));
     await pyodide.loadPackage(["numpy", "pandas", "matplotlib", "micropip"]);
     pyodide.runPython(PY_RUNNER);
     ready = true;
-    statusEl.textContent = "Ready ✔ — tap any project above and it runs by itself.";
+    statusEl.textContent = "Ready ✔ — tap any project above.";
   } catch (err) {
     statusEl.textContent = "Something went wrong while loading: " + err.message;
   }
