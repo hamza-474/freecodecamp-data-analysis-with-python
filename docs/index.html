@@ -123,7 +123,7 @@ async function init() {
     pyodide = await loadPyodide();
     statusEl.textContent = "Loading data libraries…";
     await pyodide.loadPackage(["numpy", "pandas", "matplotlib", "scipy", "micropip"]);
-    await pyodide.runPythonAsync("import micropip\nawait micropip.install('seaborn')");
+    await pyodide.runPythonAsync("import micropip\npass  # seaborn is installed on demand by the medical project");
     statusEl.textContent = "Loading project files…";
     const files = [
       "mean_var_std.py", "demographic_data_analyzer.py", "medical_data_visualizer.py",
@@ -136,7 +136,7 @@ async function init() {
     statusEl.textContent = "Ready — pick a project and press Run.";
     runBtn.disabled = false;
   } catch (err) {
-    statusEl.textContent = "Something went wrong while loading: " + err.message;
+    statusEl.textContent = "Something went wrong while loading: " + (err && err.message ? err.message : String(err));
   }
 }
 
