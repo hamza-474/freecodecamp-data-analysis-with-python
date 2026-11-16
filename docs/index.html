@@ -112,10 +112,10 @@ async function fetchToFS(path) {
   let res; try { res = await fetch(RAW + path); } catch (e) { throw new Error("fetch failed for " + path + ": " + (e && e.message ? e.message : String(e))); }
   if (!res.ok) throw new Error("Could not load " + path);
   const data = new Uint8Array(await res.arrayBuffer());
-  const dir = path.split("/").slice(0, -1).join("/");
-  if (dir) { try { pyodide.FS.mkdirTree(dir); } catch (e) {} }
-  pyodide.FS.writeFile(path, data);
-  if (dir === "data") pyodide.FS.writeFile(path.split("/").pop(), data);
+  // write by basename so the Python modules can open the file by name
+  // (no subdirectories are created)
+  pyodide.FS.writeFile(path.split("/").pop(), data);
+  // (single copy is enough)
 }
 
 async function init() {
@@ -128,11 +128,11 @@ async function init() {
     const files = [
       "mean_var_std.py", "demographic_data_analyzer.py", "medical_data_visualizer.py",
       "time_series_visualizer.py", "sea_level_predictor.py",
-      "data/adult.data.csv", "data/medical_examination.csv",
-      "data/fcc-forum-pageviews.csv", "data/epa-sea-level.csv"
+      // data files are fetched on demand in the Run handler
+      // (data loads on demand in the Run handler)
     ];
     for (const f of files) { statusEl.textContent = "Loading project files… " + f; await fetchToFS(f); }
-    pyodide.runPython(PY_RUNNER);
+    statusEl.textContent = "Starting the Python runner…"; pyodide.runPython(PY_RUNNER);
     statusEl.textContent = "Ready — pick a project and press Run.";
     runBtn.disabled = false;
   } catch (err) {
@@ -145,7 +145,7 @@ runBtn.addEventListener("click", async () => {
   if (selected === "sealevel") { statusEl.textContent = "Loading scipy…"; await pyodide.loadPackage("scipy"); } if (selected === "medical") { statusEl.textContent = "Installing seaborn…"; await pyodide.loadPackage("micropip"); await pyodide.pyimport("micropip").install("seaborn"); } statusEl.textContent = "Running…";
   outEl.innerHTML = "";
   try {
-    pyodide.globals.set("p_name", selected);
+    if (selected === "demographic") { statusEl.textContent = "Loading census data…"; await fetchToFS("data/adult.data.csv"); } if (selected === "medical") { statusEl.textContent = "Loading medical data…"; await fetchToFS("data/medical_examination.csv"); } if (selected === "timeseries") { statusEl.textContent = "Loading page-view data…"; await fetchToFS("data/fcc-forum-pageviews.csv"); } if (selected === "sealevel") { statusEl.textContent = "Loading sea-level data…"; await fetchToFS("data/epa-sea-level.csv"); } pyodide.globals.set("p_name", selected);
     pyodide.globals.set("p_arg", numsEl.value || "");
     const resultJson = await pyodide.runPythonAsync("run_project(p_name, p_arg)");
     const result = JSON.parse(resultJson);
@@ -162,7 +162,7 @@ runBtn.addEventListener("click", async () => {
     }
     statusEl.textContent = "Done ✔";
   } catch (err) {
-    statusEl.textContent = "This project hit an error: " + err.message;
+    statusEl.textContent = "This project hit an error: " + (err && err.message ? err.message : String(err));
   }
   runBtn.disabled = false;
 });
